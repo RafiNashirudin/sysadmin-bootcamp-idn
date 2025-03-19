@@ -6,15 +6,25 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
 
 ### 1. **Konfigurasi Keamanan dan Manajemen Sistem pada CentOS 9**
 
-- Manajemen User & Grup
-- Konfigurasi Firewall (Firewalld)
-- Pengamanan Server dengan SELinux
+   - Manajemen User & Grup
+   - Konfigurasi Firewall (Firewalld)
+   - Pengamanan Server dengan SELinux
 
 ### 2. **Konfigurasi SSH**
 
    - Konfigurasi port SSH
    - Konfigurasi port SSH Firewalld
    - Konfigurasi port SSH SELinux
+     
+### 3. **VPS Web Server Setup - CentOS Stream 9**
+
+   - Manajemen User & Grup 
+   - Konfigurasi Apache dengan Userdir
+   - Instalasi dan Konfigurasi WordPress
+   - Konfigurasi Domain
+   - Instalasi SSL dengan Let's Encrypt
+   - Instalasi dan Konfigurasi Database Management Tools
+   - Pengamanan Server
 
 ## 🚀 Cara Menggunakan
 
