@@ -16,7 +16,7 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
    - Konfigurasi port SSH Firewalld
    - Konfigurasi port SSH SELinux
      
-### 3. **VPS Web Server Setup - CentOS Stream 9**
+### 3. [**Keamanan Web Server - CentOS Stream 9**](https://github.com/RafiNashirudin/sysadmin-bootcamp-idn/blob/main/WebServer-Hardening.md)
 
    - Manajemen User & Grup 
    - Konfigurasi Apache dengan Userdir
