@@ -4,41 +4,11 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
 
 ## 📌 Daftar Tugas
 
-### 1. **Membangun Web Server dengan NGINX sebagai Reverse Proxy**
+### 1. **Konfigurasi Keamanan dan Manajemen Sistem pada CentOS 9**
 
-- Menginstal dan mengonfigurasi NGINX
-- Memisahkan Web Server dan Database Server
-- Menyetting Virtual Host dan SSL/TLS
-
-### 2. **Deploy WordPress di Docker**
-
-- Instalasi Docker dan Docker Compose
-- Konfigurasi Docker untuk WordPress dan MySQL
-- Manajemen container menggunakan `docker-compose.yml`
-
-### 3. **Manajemen Server dengan Ansible**
-
-- Instalasi dan konfigurasi Ansible
-- Automasi deployment aplikasi
-- Pengelolaan server dengan Playbook
-
-### 4. **Keamanan Server & Hardening**
-
-- Implementasi firewall dengan UFW/IPTables
-- Konfigurasi Fail2Ban untuk mitigasi brute-force attack
-- Audit keamanan dengan Lynis
-
-### 5. **Monitoring Server dengan Wazuh**
-
-- Instalasi Wazuh Server dan Agent
-- Monitoring log dan keamanan sistem
-- Konfigurasi rules dan alerting
-
-### 6. **CI/CD untuk Deployment Otomatis**
-
-- Menyiapkan pipeline dengan GitHub Actions/GitLab CI
-- Automasi deployment dengan Ansible dan Docker
-- Integrasi dengan Kubernetes (opsional)
+- Manajemen User & Grup
+- Konfigurasi Firewall (Firewalld)
+- Pengamanan Server dengan SELinux
 
 ## 🚀 Cara Menggunakan
 
