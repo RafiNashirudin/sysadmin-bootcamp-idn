@@ -22,7 +22,7 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
 ## 🎯 Catatan Tambahan
 
 - Semua tugas diuji pada lingkungan Linux CentOS Stream 9
-- Dokumentasi lebih lanjut ada di masing-masing folder tugas
+- Dokumentasi lebih lanjut ada di masing-masing file tugas
 
 ## 📞 Kontak
 
