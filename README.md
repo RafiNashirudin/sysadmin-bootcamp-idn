@@ -10,7 +10,7 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
    - Konfigurasi Firewall (Firewalld)
    - Pengamanan Server dengan SELinux
 
-### 2. **Konfigurasi SSH**
+### 2. [**Konfigurasi SSH**](https://github.com/RafiNashirudin/sysadmin-bootcamp-idn/blob/main/ssh-configuration.md)
 
    - Konfigurasi port SSH
    - Konfigurasi port SSH Firewalld
