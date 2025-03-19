@@ -10,6 +10,12 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
 - Konfigurasi Firewall (Firewalld)
 - Pengamanan Server dengan SELinux
 
+### 2. **Konfigurasi SSH**
+
+   - Konfigurasi port SSH
+   - Konfigurasi port SSH Firewalld
+   - Konfigurasi port SSH SELinux
+
 ## 🚀 Cara Menggunakan
 
 1. Clone repositori ini:
