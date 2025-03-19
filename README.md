@@ -4,7 +4,7 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
 
 ## 📌 Daftar Tugas
 
-### 1. **Konfigurasi Keamanan dan Manajemen Sistem pada CentOS 9**
+### 1. [**Konfigurasi Keamanan dan Manajemen Sistem pada CentOS 9**](https://github.com/RafiNashirudin/sysadmin-bootcamp-idn/blob/main/centos9-user-firewalld-selinux.md)
 
    - Manajemen User & Grup
    - Konfigurasi Firewall (Firewalld)
