@@ -16,8 +16,8 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
    ```bash
    git clone https://github.com/RafiNashirudin/sysadmin-bootcamp-idn.git
    ```
-2. Buka folder tugas yang ingin dijalankan
-3. Ikuti langkah-langkah yang ada di masing-masing direktori tugas
+2. Buka file tugas yang ingin dijalankan
+3. Ikuti langkah-langkah yang ada di masing-masing file tugas
 
 ## 🎯 Catatan Tambahan
 
