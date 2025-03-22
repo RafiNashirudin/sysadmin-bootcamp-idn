@@ -270,8 +270,11 @@ Tambahkan:
 ## OpenSSL
 
 *(Jika Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
-```bash
-sudo openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/private/user1.key -out /etc/ssl/certs/user1.crt -days 365 -nodes
+```
+for user in user1 user2 user3; do
+  openssl req -new -x509 -days 365 -nodes -out /etc/pki/tls/certs/${user}.crt -keyout /etc/pki/tls/private/${user}.key \
+    -subj "/C=ID/ST=Jawa Timur/L=Surabaya/O=Local User/CN=${user}.local"
+done
 ```
 Tambahkan SSL ke VirtualHost.
 
