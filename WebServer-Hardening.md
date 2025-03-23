@@ -162,7 +162,7 @@ for user in "${USERS[@]}"; do
 done
 
 echo "Database dan user MySQL telah dibuat untuk: ${USERS[*]}"
-`
+```
 
 ## phpMyAdmin
 
