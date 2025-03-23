@@ -289,11 +289,66 @@ Tambahkan:
 
 *(Jika Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
 ```
-for user in akane ruby arima; do
-  openssl req -new -x509 -days 365 -nodes -out /etc/pki/tls/certs/${user}.crt -keyout /etc/pki/tls/private/${user}.key \
-    -subj "/C=ID/ST=Jawa Timur/L=Surabaya/O=Local User/CN=${user}.local"
+#!/bin/bash
+
+# Konfigurasi
+USERS=("akane" "ruby" "arima")
+CERTS_DIR="/etc/pki/tls/certs"
+PRIVATE_DIR="/etc/pki/tls/private"
+CA_KEY="${PRIVATE_DIR}/ca.key"
+CA_CERT="${CERTS_DIR}/ca.pem"
+CA_SERIAL="${CERTS_DIR}/ca.srl"
+CONFIG_FILE="config.txt"
+DAYS=365
+
+# Pastikan direktori ada
+mkdir -p "$CERTS_DIR" "$PRIVATE_DIR"
+
+# Cek apakah CA sudah ada, jika tidak buat CA baru
+if [[ ! -f "$CA_KEY" || ! -f "$CA_CERT" ]]; then
+    echo "Membuat Certificate Authority (CA)..."
+    openssl genrsa -out "$CA_KEY" 4096
+    openssl req -x509 -new -nodes -key "$CA_KEY" -sha256 -days "$DAYS" -out "$CA_CERT" -subj "/C=ID/ST=Jawa Timur/L=Surabaya/O=Local CA/CN=local-ca"
+    echo "CA berhasil dibuat: $CA_CERT"
+else
+    echo "CA sudah ada, melewati pembuatan CA..."
+fi
+
+# Loop untuk setiap user
+for user in "${USERS[@]}"; do
+    CSR="${PRIVATE_DIR}/${user}.csr"
+    KEY="${PRIVATE_DIR}/${user}.key"
+    CRT="${CERTS_DIR}/${user}.crt"
+
+    echo "Membuat private key dan CSR untuk ${user}..."
+    openssl req -new -nodes -keyout "$KEY" -out "$CSR" -subj "/C=ID/ST=Jawa Timur/L=Surabaya/O=Local User/CN=${user}.local"
+
+    echo "Menandatangani sertifikat untuk ${user}..."
+    openssl x509 -req -in "$CSR" -CA "$CA_CERT" -CAkey "$CA_KEY" -CAcreateserial -out "$CRT" -days "$DAYS" -sha256 -extfile "$CONFIG_FILE"
+
+    echo "Sertifikat untuk ${user} selesai: $CRT"
 done
+
+echo "Semua sertifikat selesai dibuat."
 ```
+
+create config.txt
+```
+nano config.txt
+```
+
+```
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = akane.local
+DNS.2 = ruby.local
+DNS.3 = arima.local
+```
+
 Tambahkan SSL ke VirtualHost.
 
 # Keamanan dan Hardening
