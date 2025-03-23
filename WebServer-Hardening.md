@@ -132,21 +132,22 @@ sudo systemctl status mariadb
    
 Buat Database untuk Setiap User  
 ```
-mysql -u root -p -e "
-CREATE DATABASE wp_akane;
-CREATE USER 'wp_akane'@'localhost' IDENTIFIED BY 'B-Komachi';
-GRANT ALL PRIVILEGES ON wp_akane.* TO 'wp_akane'@'localhost';
+#!/bin/bash
 
-CREATE DATABASE wp_ruby;
-CREATE USER 'wp_ruby'@'localhost' IDENTIFIED BY 'B-Komachi';
-GRANT ALL PRIVILEGES ON wp_ruby.* TO 'wp_ruby'@'localhost';
+# Konfigurasi
+DB_PASSWORD="B-Komachi"
+USERS=("akane" "ruby" "arima")
 
-CREATE DATABASE wp_arima;
-CREATE USER 'wp_arima'@'localhost' IDENTIFIED BY 'B-Komachi';
-GRANT ALL PRIVILEGES ON wp_arima.* TO 'wp_arima'@'localhost';
+# Eksekusi MySQL
+for user in "${USERS[@]}"; do
+    mysql -u root -p -e "
+    CREATE DATABASE wp_${user};
+    CREATE USER 'wp_${user}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';
+    GRANT ALL PRIVILEGES ON wp_${user}.* TO 'wp_${user}'@'localhost';
+    FLUSH PRIVILEGES;"
+done
 
-FLUSH PRIVILEGES;
-"
+echo "Database dan user MySQL telah dibuat untuk: ${USERS[*]}"
 ```
 
 ## phpMyAdmin
@@ -274,7 +275,7 @@ Tambahkan:
 
 *(Jika Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
 ```
-for user in user1 user2 user3; do
+for user in akane ruby arima; do
   openssl req -new -x509 -days 365 -nodes -out /etc/pki/tls/certs/${user}.crt -keyout /etc/pki/tls/private/${user}.key \
     -subj "/C=ID/ST=Jawa Timur/L=Surabaya/O=Local User/CN=${user}.local"
 done
@@ -420,7 +421,7 @@ Port 2222
 
 Tambahkan:
 ```
-AllowUsers user1 user2 user3
+AllowUsers akane ruby arima
 ```
 
 Restart SSH:  
