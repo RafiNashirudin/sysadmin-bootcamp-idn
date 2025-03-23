@@ -135,7 +135,7 @@ initial setup mariadb
 sudo mariadb-secure-installation
 ```
 
-` 
+``` 
 NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
       SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
@@ -201,7 +201,7 @@ All done!  If you've completed all of the above steps, your MariaDB
 installation should now be secure.
 
 Thanks for using MariaDB!
-`
+```
    
 Buat Database untuk Setiap User  
 ```
@@ -221,7 +221,7 @@ for user in "${USERS[@]}"; do
 done
 
 echo "Database dan user MySQL telah dibuat untuk: ${USERS[*]}"
-```
+`
 
 ## phpMyAdmin
 
