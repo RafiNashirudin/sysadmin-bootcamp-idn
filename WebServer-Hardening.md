@@ -55,9 +55,9 @@ sudo firewall-cmd --reload
 
 bash script membuat 3 user
 ```bash
-for user in user1 user2 user3; do
+for user in akane ruby arima; do
     sudo useradd -m $user
-    echo "$user:password123" | sudo chpasswd
+    echo "$user:animelovers" | sudo chpasswd
     sudo mkdir -p /home/$user/public_html
     sudo chown -R $user:$user /home/$user/public_html
     sudo chmod 755 /home/$user
@@ -108,6 +108,11 @@ check php version
 php -v
 ```
 
+enable php-fpm
+```
+sudo systemctl enable --now php-fpm
+```
+
 ## mariadb
 
 install mariadb
@@ -126,15 +131,23 @@ sudo systemctl status mariadb
 ```
    
 Buat Database untuk Setiap User  
-```bash
+```
 mysql -u root -p -e "
-CREATE DATABASE wp_user1;
-CREATE USER 'wp_user1'@'localhost' IDENTIFIED BY 'pass123';
-GRANT ALL PRIVILEGES ON wp_user1.* TO 'wp_user1'@'localhost';
+CREATE DATABASE wp_akane;
+CREATE USER 'wp_akane'@'localhost' IDENTIFIED BY 'B-Komachi';
+GRANT ALL PRIVILEGES ON wp_akane.* TO 'wp_akane'@'localhost';
+
+CREATE DATABASE wp_ruby;
+CREATE USER 'wp_ruby'@'localhost' IDENTIFIED BY 'B-Komachi';
+GRANT ALL PRIVILEGES ON wp_ruby.* TO 'wp_ruby'@'localhost';
+
+CREATE DATABASE wp_arima;
+CREATE USER 'wp_arima'@'localhost' IDENTIFIED BY 'B-Komachi';
+GRANT ALL PRIVILEGES ON wp_arima.* TO 'wp_arima'@'localhost';
+
 FLUSH PRIVILEGES;
 "
 ```
-*(Ulangi untuk user2 dan user3 dengan nama database & user berbeda)*
 
 ## phpMyAdmin
 
@@ -168,7 +181,7 @@ Akses phpMyAdmin
 
 Download dan Ekstrak WordPress  
 ```
-for user in user1 user2 user3; do
+for user in akane ruby arima; do
     sudo -u $user wget -O /home/$user/public_html/latest.tar.gz https://wordpress.org/latest.tar.gz
     sudo -u $user tar -xzf /home/$user/public_html/latest.tar.gz -C /home/$user/public_html
     sudo -u $user mv /home/$user/public_html/wordpress/* /home/$user/public_html/
@@ -178,58 +191,48 @@ done
 
 Konfigurasi **wp-config.php**  
 ```
-for user in user1 user2 user3; do
+for user in akane ruby arima; do
     sudo -u $user cp /home/$user/public_html/wp-config-sample.php /home/$user/public_html/wp-config.php
     sudo -u $user sed -i "s/database_name_here/wp_$user/" /home/$user/public_html/wp-config.php
     sudo -u $user sed -i "s/username_here/wp_$user/" /home/$user/public_html/wp-config.php
-    sudo -u $user sed -i "s/password_here/pass123/" /home/$user/public_html/wp-config.php
+    sudo -u $user sed -i "s/password_here/B-Komachi/" /home/$user/public_html/wp-config.php
 done
 ```
 
 # Konfigurasi Domain
 ## httpd
 
-Edit **/etc/httpd/conf.d/userdir.conf**
+Buat konfigurasi virtualhost di `/etc/httpd/conf.d/akane.local.conf`.
 Tambahkan konfigurasi VirtualHost untuk masing-masing user:
 ```
-sudo nano /etc/httpd/conf.d/userdir.conf
+sudo nano /etc/httpd/conf.d/akane.local.conf
 ```
-   
-Tambahkan:  
-```
-<VirtualHost *:443>
-    ServerAdmin user1@user.local
-    DocumentRoot /home/user1/public_html
-    ServerName your-ip
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/user1.crt
-    SSLCertificateKeyFile /etc/ssl/private/user1.key
-    ErrorLog "/var/log/httpd/user1.error_log"
-    CustomLog "/var/log/httpd/user1.access_log" common
-</VirtualHost>
 
-<VirtualHost *:443>
-    ServerAdmin user2@user.local
-    DocumentRoot /home/user2/public_html
-    ServerName your-ip
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/user2.crt
-    SSLCertificateKeyFile /etc/ssl/private/user2.key
-    ErrorLog "/var/log/httpd/user2.error_log"
-    CustomLog "/var/log/httpd/user2.access_log" common
-</VirtualHost>
-
-<VirtualHost *:443>
-    ServerAdmin user3@user.local
-    DocumentRoot /home/user3/public_html
-    ServerName your-ip
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/user3.crt
-    SSLCertificateKeyFile /etc/ssl/private/user3.key
-    ErrorLog "/var/log/httpd/user3.error_log"
-    CustomLog "/var/log/httpd/user3.access_log" common
+```
+<VirtualHost *:80>
+    ServerAdmin webmaster@akane.local
+    DocumentRoot "/home/akane/public_html"
+    ServerName akane.local
+    ErrorLog "/var/log/httpd/akane.local-error_log"
+    CustomLog "/var/log/httpd/akane.local-access_log" common
 </VirtualHost>
 ```
+*(Ulangi untuk user2 dan user3 dengan nama virtualhost untuk http berbeda)*
+
+Buat konfigurasi virtualhost untuk https di `/etc/httpd/conf.d/ssl-akane.local.conf`.
+```
+<VirtualHost *:443>
+    ServerAdmin webmaster@akane.local
+    DocumentRoot "/home/akane/public_html"
+    ServerName akane.local
+    SSLEngine on
+    SSLCertificateFile /etc/pki/tls/certs/akane.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/akane.key
+    ErrorLog "/var/log/httpd/ssl-akane.local-error_log"
+    CustomLog "/var/log/httpd/ssl-akane.local-access_log" common
+</VirtualHost>
+```
+*(Ulangi untuk user2 dan user3 dengan nama virtualhost untuk https berbeda)*
 
 Restart Apache  
 ```
