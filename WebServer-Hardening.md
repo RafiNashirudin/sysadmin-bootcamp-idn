@@ -234,21 +234,6 @@ sudo nano /etc/httpd/conf.d/akane.local.conf
 ```
 *(Ulangi untuk user2 dan user3 dengan nama virtualhost untuk http berbeda)*
 
-Buat konfigurasi virtualhost untuk https di `/etc/httpd/conf.d/ssl-akane.local.conf`.
-```
-<VirtualHost *:443>
-    ServerAdmin webmaster@akane.local
-    DocumentRoot "/home/akane/public_html"
-    ServerName akane.local
-    SSLEngine on
-    SSLCertificateFile /etc/pki/tls/certs/akane.crt
-    SSLCertificateKeyFile /etc/pki/tls/private/akane.key
-    ErrorLog "/var/log/httpd/ssl-akane.local-error_log"
-    CustomLog "/var/log/httpd/ssl-akane.local-access_log" common
-</VirtualHost>
-```
-*(Ulangi untuk user2 dan user3 dengan nama virtualhost untuk https berbeda)*
-
 Restart Apache  
 ```
 sudo systemctl restart httpd
@@ -264,6 +249,23 @@ Tambahkan ke `/etc/hosts`:
 
 # Instalasi SSL dengan OpenSSL
 ## OpenSSL
+
+create config.txt
+```
+nano config.txt
+```
+
+```
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = akane.local
+DNS.2 = ruby.local
+DNS.3 = arima.local
+```
 
 *(Karena Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
 ```
@@ -310,24 +312,26 @@ done
 echo "Semua sertifikat selesai dibuat."
 ```
 
-create config.txt
+## httpd
+Buat konfigurasi virtualhost untuk https di `/etc/httpd/conf.d/ssl-akane.local.conf`.
 ```
-nano config.txt
+<VirtualHost *:443>
+    ServerAdmin webmaster@akane.local
+    DocumentRoot "/home/akane/public_html"
+    ServerName akane.local
+    SSLEngine on
+    SSLCertificateFile /etc/pki/tls/certs/akane.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/akane.key
+    ErrorLog "/var/log/httpd/ssl-akane.local-error_log"
+    CustomLog "/var/log/httpd/ssl-akane.local-access_log" common
+</VirtualHost>
 ```
+*(Ulangi untuk user2 dan user3 dengan nama virtualhost untuk https berbeda)*
 
+Restart Apache  
 ```
-authorityKeyIdentifier=keyid,issuer
-basicConstraints=CA:FALSE
-keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1 = akane.local
-DNS.2 = ruby.local
-DNS.3 = arima.local
+sudo systemctl restart httpd
 ```
-
-Tambahkan SSL ke VirtualHost.
 
 # Keamanan dan Hardening
 ## SELinux
