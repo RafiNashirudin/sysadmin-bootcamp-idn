@@ -262,32 +262,10 @@ Tambahkan ke `/etc/hosts`:
 127.0.0.1 user3.local
 ```
 
-# Instalasi SSL dengan Let's Encrypt
-## Certbot
-
-Install Certbot  
-```
-sudo dnf install certbot python3-certbot-apache -y
-```
-   
-Dapatkan SSL untuk Domain  
-```
-sudo certbot --apache -d user1.domain.com -d user2.domain.com -d user3.domain.com
-```
-
-Perpanjangan Otomatis  
-```
-sudo crontab -e
-```
-   
-Tambahkan:  
-```
-0 0 * * * certbot renew --quiet
-```
-
+# Instalasi SSL dengan OpenSSL
 ## OpenSSL
 
-*(Jika Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
+*(Karena Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
 ```
 #!/bin/bash
 
