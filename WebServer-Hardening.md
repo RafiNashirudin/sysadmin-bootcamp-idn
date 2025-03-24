@@ -301,6 +301,10 @@ sudo openssl req -new -key domain.key -out domain.csr -config mydomain.cnf
 ```
 openssl x509 -req -in domain.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out domain.crt -days 365 -sha256 -extfile mydomain.cnf -extensions req_ext
 ```
+
+```
+sudo cp ca.key ca.pem domain.crt domain.csr domain.key /etc/ssl
+```
   
 ## httpd
 Buat konfigurasi virtualhost untuk https di `/etc/httpd/conf.d/ssl-akane.local.conf`.
@@ -310,8 +314,8 @@ Buat konfigurasi virtualhost untuk https di `/etc/httpd/conf.d/ssl-akane.local.c
     DocumentRoot "/home/akane/public_html"
     ServerName akane.local
     SSLEngine on
-    SSLCertificateFile /etc/pki/tls/certs/akane.crt
-    SSLCertificateKeyFile /etc/pki/tls/private/akane.key
+    SSLCertificateFile /etc/ssl/domain.crt
+    SSLCertificateKeyFile /etc/ssl/domain.key
     ErrorLog "/var/log/httpd/ssl-akane.local-error_log"
     CustomLog "/var/log/httpd/ssl-akane.local-access_log" common
 </VirtualHost>
