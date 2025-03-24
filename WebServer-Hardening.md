@@ -268,48 +268,55 @@ DNS.3 = arima.local
 ```
 
 *(Karena Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
+
+create file `mydomain.cnf`
 ```
-#!/bin/bash
+sudo nano mydomain.cnf
+```
 
-# Konfigurasi
-USERS=("akane" "ruby" "arima")
-CERTS_DIR="/etc/pki/tls/certs"
-PRIVATE_DIR="/etc/pki/tls/private"
-CA_KEY="${PRIVATE_DIR}/ca.key"
-CA_CERT="${CERTS_DIR}/ca.pem"
-CA_SERIAL="${CERTS_DIR}/ca.srl"
-CONFIG_FILE="config.txt"
-DAYS=365
+```
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+req_extensions = req_ext
 
-# Pastikan direktori ada
-mkdir -p "$CERTS_DIR" "$PRIVATE_DIR"
+[dn]
+C = ID
+ST = Jawa Timur
+L = Sidoarjo
+O = IDN
+OU = SYSADMIN
+CN = akane.local
 
-# Cek apakah CA sudah ada, jika tidak buat CA baru
-if [[ ! -f "$CA_KEY" || ! -f "$CA_CERT" ]]; then
-    echo "Membuat Certificate Authority (CA)..."
-    openssl genrsa -out "$CA_KEY" 4096
-    openssl req -x509 -new -nodes -key "$CA_KEY" -sha256 -days "$DAYS" -out "$CA_CERT" -subj "/C=ID/ST=Jawa Timur/L=Surabaya/O=Local CA/CN=local-ca"
-    echo "CA berhasil dibuat: $CA_CERT"
-else
-    echo "CA sudah ada, melewati pembuatan CA..."
-fi
+[req_ext]
+subjectAltName = @alt_names
 
-# Loop untuk setiap user
-for user in "${USERS[@]}"; do
-    CSR="${PRIVATE_DIR}/${user}.csr"
-    KEY="${PRIVATE_DIR}/${user}.key"
-    CRT="${CERTS_DIR}/${user}.crt"
+[alt_names]
+DNS.1 = akane.local
+DNS.2 = ruby.local
+DNS.3 = arima.local
+```
 
-    echo "Membuat private key dan CSR untuk ${user}..."
-    openssl req -new -nodes -keyout "$KEY" -out "$CSR" -subj "/C=ID/ST=Jawa Timur/L=Surabaya/O=Local User/CN=${user}.local"
+```
+openssl genrsa -out ca.key 2048
+```
 
-    echo "Menandatangani sertifikat untuk ${user}..."
-    openssl x509 -req -in "$CSR" -CA "$CA_CERT" -CAkey "$CA_KEY" -CAcreateserial -out "$CRT" -days "$DAYS" -sha256 -extfile "$CONFIG_FILE"
+```
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.pem -subj "/C=ID/ST=JATIM/L=KOTA/O=IDN/OU=SYADMIN/CN=domain.local"
+```
 
-    echo "Sertifikat untuk ${user} selesai: $CRT"
-done
+```
+openssl genrsa -out domain.key 2048
+```
 
-echo "Semua sertifikat selesai dibuat."
+```
+openssl req -new -key domain.key -out domain.csr -config mydomain.cnf
+```
+
+```
+openssl x509 -req -in domain.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out domain.crt -days 365 -sha256 -extfile mydomain.cnf -extensions req_ext
 ```
 
 ## httpd
@@ -470,19 +477,8 @@ Change it to:
 Port 2222
 ```
 
-Tambahkan:
-```
-AllowUsers akane ruby arima
-```
-
 Restart SSH:  
 ```
-sudo systemctl restart sshd
-```
-
-Nonaktif Login Root SSH  
-```
-sudo sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
 sudo systemctl restart sshd
 ```
 
@@ -538,16 +534,4 @@ SSH login test
 
 ```
 ssh -i <Your-Key>.pem username@<IP Your SSH> -p <Port your SSH>
-```
-
-## Fail2Ban
-
-Install Fail2Ban  
-```
-sudo dnf install fail2ban -y
-```
-
-enable Fail2Ban
-```
-sudo systemctl enable --now fail2ban
 ```
