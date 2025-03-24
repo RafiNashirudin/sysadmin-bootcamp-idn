@@ -250,24 +250,7 @@ Tambahkan ke `/etc/hosts`:
 # Instalasi SSL dengan OpenSSL
 ## OpenSSL
 
-create config.txt
-```
-nano config.txt
-```
-
-```
-authorityKeyIdentifier=keyid,issuer
-basicConstraints=CA:FALSE
-keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1 = akane.local
-DNS.2 = ruby.local
-DNS.3 = arima.local
-```
-
-*(Karena Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*  
+*(Karena Menggunakan Domain Lokal, Gunakan OpenSSL untuk Buat Sertifikat Manual)*
 
 create file `mydomain.cnf`
 ```
@@ -318,7 +301,7 @@ openssl req -new -key domain.key -out domain.csr -config mydomain.cnf
 ```
 openssl x509 -req -in domain.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out domain.crt -days 365 -sha256 -extfile mydomain.cnf -extensions req_ext
 ```
-
+  
 ## httpd
 Buat konfigurasi virtualhost untuk https di `/etc/httpd/conf.d/ssl-akane.local.conf`.
 ```
