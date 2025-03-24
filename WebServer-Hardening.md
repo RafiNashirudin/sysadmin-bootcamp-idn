@@ -283,23 +283,19 @@ DNS.3 = arima.local
 ```
 
 ```
-openssl genrsa -out ca.key 2048
+sudo openssl genrsa -out ca.key 2048
 ```
 
 ```
-openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.pem -subj "/C=ID/ST=JATIM/L=KOTA/O=IDN/OU=SYADMIN/CN=domain.local"
+sudo openssl genrsa -out domain.key 2048
 ```
 
 ```
-openssl genrsa -out domain.key 2048
+sudo openssl req -new -key domain.key -out domain.csr -config mydomain.cnf
 ```
 
 ```
-openssl req -new -key domain.key -out domain.csr -config mydomain.cnf
-```
-
-```
-openssl x509 -req -in domain.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out domain.crt -days 365 -sha256 -extfile mydomain.cnf -extensions req_ext
+sudo openssl x509 -req -in domain.csr -CA ca.pem -CA key ca.key -CA createserial -out domain.crt -days 365 -sha256 -extfile mydomain.cnf -extensions req_ext
 ```
   
 ## httpd
