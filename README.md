@@ -44,7 +44,6 @@ Repositori ini berisi kumpulan tugas yang telah saya kerjakan selama mengikuti *
 
 Jika ada pertanyaan atau diskusi lebih lanjut, bisa menghubungi saya melalui:
 
-- Email: rafisysops@gmail.com
 - LinkedIn: [linkedin.com/in/rafinashirudin](https://linkedin.com/in/rafinashirudin)
 - GitHub: [github.com/RafiNashirudin](https://github.com/RafiNashirudin)
 
